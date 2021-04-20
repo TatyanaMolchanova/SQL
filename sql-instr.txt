@@ -1,0 +1,267 @@
+// 0. install Mamp server and run it and go into PHPMYAdmin
+//1. create database with name shop
+CREATE DATABASE shop;
+//2. delete database
+DROP DATABASE shop;
+//3. Create table in database I have to go in this database by click 
+and then click SQL - There have to be 1 field minimum - id;
+CREATE TABLE users(
+	id INT
+);
+//4. Delete table - go to database, press SQL, and:
+DROP TABLE users;
+//5. id field cannot be empty and increment this field every new record for
+unique id
+CREATE TABLE people(
+	id INT NOT NULL AUTO_INCREMENT
+);
+//6. No equal id allowed:
+PRIMARY KEY(id)
+CREATE TABLE people(
+	id INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY(id)
+);
+//7. Field name is shortText - so VARCHAR and length 30 symbols max, so:
+CREATE TABLE people(
+	id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30),
+    email VARCHAR(40),
+    bio TEXT,
+    birth DATE,
+    PRIMARY KEY(id)
+);
+//8. Change table - add new field 
+ALTER TABLE people ADD pass VARCHAR(32);
+//9. Delete field in table:
+ALTER TABLE people DROP COLUMN pass;
+//10. Change table - go to bd., go to table and press SQL 
+INSERT INTO in which table (what fields, except id with autoincrement)
+ VALUES(values of fields)
+INSERT INTO people () VALUES()
+INSERT INTO people (name, bio, birth, email) VALUES('Tanya', 'Just programmer', '2050-04-03', 'test@gmail.com')
+Press Go  
+// I can point just some fields, not all:
+INSERT INTO people (name, email) VALUES('Misha', 'iloveyou@gmail.com')
+
+11.// Change type of field and prohibit NULL value for field
+0. For this at first we have not to have empty values for this field - 
+we have manually give value for birth field 
+1. Go to itanswers bd, SQL, 
+ALTER TABLE people CHANGE (point name of changed field) (new name to changed field
+- in this example it's the same as old one) (point data type) (Prohibit NULL values)
+ALTER TABLE people CHANGE birth birth DATE NOT NULL;
+2. INSERT INTO people (name) VALUES('Dream') 
+it makes error - now we cant pass birth with NULL value!
+3. INSERT INTO people (name, birth) VALUES('Dream', '2070-05-08') 
+its ok now!
+
+12. Multiple adding of elements in itanswers bd, then to people table, SQL
+INSERT INTO people (name, email, bio, birth)
+	VALUES
+    ('Bob', 'test@test.com', 'coding', '2050-03-04'),
+    ('Alex', 'test2@test.com', 'coding 1', '2050-03-04'),
+    ('John', 'test3@test.com', 'coding 2', '2050-03-04'),
+    ('TN', 'test4@test.com', 'coding 3', '2050-03-04');
+
+14. Updating data 
+(UPDATE `people` SET `name` to new value for record with id 5:)
+UPDATE `people` SET `name` = 'Max' WHERE id = 5;
+
+UPDATE people SET `name` = 'Ivan', `email` = 'newemail@email.com' WHERE name = 'Max';
+UPDATE people SET `name` = 'Ivan', `email` = 'newemail@email.com' WHERE id > 4;
+UPDATE people SET `bio` = 'Just new bio' WHERE name = 'Ivan' AND id = 5;
+
+15. Delete data from DATABASE
+0. In itanswers:
+CREATE TABLE test (
+	id INT NOt NULL,
+    someText TEXT,
+    someField VARCHAR(36),
+    PRIMARY KEY(id)
+)
+2) go to test table, SQL, create some records
+INSERT INTO test (id, someText, someField)
+    VALUES
+    (1, 'Just text', 'Text'),
+    (2, 'Just text 2', 'Text'),
+    (3, 'Just text 3', 'Text'),
+    (4, 'Just text 4', 'Text');
+3. delete record with id 2  - go to test table, SQL
+DELETE FROM test WHERE id = 2;
+4. delete all records in TABLE - go to test table, SQL
+DELETE FROM test;
+or - 
+DELETE FROM test WHERE id > 0;
+5. To clean all table:
+TRUNCATE `test`;
+6. delete table 
+Go to database itanswers, SQL
+DROP TABLE test;
+
+If I forgot some command - I can do it with graphic interface of phpMyAdmin and 
+see this command syntah above table 
+
+16. Choose data from database
+1. choose all from the table:
+SELECT * FROM `people`;
+
+choose from table name and bio
+SELECT `name`, `bio` FROM `people`;
+
+SELECT `id`, `name` FROM `people` WHERE id >= 2 AND id < 4;
+SELECT * FROM people WHERE id = 5;
+
+id not equal 5:
+SELECT * FROM people WHERE id <> 5;
+
+SELECT * FROM people WHERE id <> 5 AND id <> 2;
+SELECT * FROM people WHERE id <> 5 AND id <> 2 AND name = 'Ivan' AND bio IS NULL;
+SELECT * FROM `people` WHERE name = 'Ivan' OR id = 5;
+
+2. data will not be repeated, will be unique value due to DISTINCT
+SELECT DISTINCT name FROM `people`;
+
+3. OUTPUT JUST 2 RECORDS - LIMIT 2:
+SELECT * FROM `people` LIMIT 2;
+
+LIMIT 2, 3 - 2 elements are passed, 3 elements are outputed:
+SELECT * FROM `people` LIMIT 2, 3;
+
+17. Sort data 
+
+SELECT * FROM `people` WHERE id > 0 ORDER BY id LIMIT 2, 3;
+SELECT * FROM `people` WHERE id > 0 ORDER BY birth LIMIT 2, 3;
+
+sort in opposite order due to DESC 
+SELECT * FROM `people` WHERE id > 0 ORDER BY id DESC LIMIT 2, 3
+
+18. output data from 2 to 6:
+SELECT * FROM `people` WHERE id > 2 AND id < 6;
+SELECT * FROM `people` WHERE id BETWEEN 2 AND 6 AND id <> 4 ORDER BY id DESC LIMIT 10;  
+
+19. Output definite records with IN:
+SELECT * FROM `people` WHERE id IN(4, 5, 2, 1) ORDER BY id DESC LIMIT 10; 
+
+20. Choose all fields which starts with Iva 
+
+SELECT * FROM `people` WHERE name LIKE 'Iva%';
+
+search field name with any meeting we have a:
+SELECT * FROM `people` WHERE name LIKE '%va%';
+
+
+21. Indexes shorten time for search in database
+1. create index 
+CREATE INDEX MyIndex ON people(name);
+
+in phpMyAdmin in Structure you'll see grey key near name field 
+or on green refresh you can see in Indexes aside in MyIndex
+
+2. 
+SELECT `name` FROM `people`;
+it Showing rows 0 - 6 (7 total, Query took 0.0010 seconds.)
+
+3. delete index 
+DROP INDEX MyIndex ON people;
+
+SELECT `name` FROM `people`;
+ Showing rows 0 - 6 (7 total, Query took 0.0002 seconds.) - it bad not awaiting result
+
+ 22. data Union
+
+ CREATE TABLE shop(
+	id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(100),
+    price INT,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE orders(
+	id INT NOT NULL AUTO_INCREMENT,
+  	orderNumber INT,
+    shopId INT,
+    personId INT,
+    date_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id),
+    FOREIGN KEY(shopId) REFERENCES shop(id),
+    FOREIGN KEY(personId) REFERENCES people(id)
+);
+
+this:
+    FOREIGN KEY(shopId) REFERENCES shop(id),
+    FOREIGN KEY(personId) REFERENCES people(id)
+make indexes in Structure
+
+in shop table:
+INSERT INTO `shop`(`title`, `price`) 
+	VALUES 
+    ('iPhone', 300),
+     ('TV', 700),
+      ('PS4', 600),
+       ('Mac', 500),
+        ('Fridge', 400),
+         ('iPhone 7', 900);
+
+in order table:
+INSERT INTO `orders`(`orderNumber`, `shopId`, `personId`) 
+	VALUES 
+	(0001, 2, 4),
+    (0001, 4, 1),
+    (0001, 2, 5),
+    (0001, 3, 3),
+    (0001, 1, 2),
+    (0001, 1, 4);
+
+go to orders, SQL:
+
+INNER JOIN  - union data from different tables
+2:
+
+SELECT orders.orderNumber, people.name, people.email FROM people 
+INNER JOIN orders ON people.id = orders.personId
+ORDER BY orders.orderNumber DESC;
+
+//https://www.youtube.com/watch?v=E1nHIP3QTx4
+
+3. 
+SELECT shop.title, people.name, people.email FROM people 
+INNER JOIN orders ON people.id = orders.personId
+INNER JOIN shop ON shop.id = orders.shopId
+ORDER BY orders.orderNumber DESC;
+
+
+4. 
+SELECT people.name, orders.orderNumber FROM people 
+LEFT JOIN orders ON people.id = orders.personId
+ORDER BY people.name DESC;
+
+5. RIGHT JOIN - take data not from main table (which after FROM)
+SELECT orders.date_time, people.name FROM orders
+RIGHT JOIN people ON orders.personId = people.id;
+
+23. Pseudonim
+SELECT name AS 'Name', birth AS 'Birth Day' FROM people;
+
+24. Union 2 field in 1:
+
+SELECT CONCAT('NAME: ', name, '. BIRTH DAY: ', birth) AS 'Info' FROM people;
+
+25. Pseudonim for table name:
+SELECT p.id, p.name, s.title, s.price FROM people AS p, shop AS s;
+
+
+26. Functions
+SELECT COUNT(id) FROM shop;
+SELECT MIN(price) FROM shop;
+SELECT MAX(price) FROM shop
+SELECT AVG(price) FROM shop
+SELECT SUM(price) FROM shop
+SELECT UCASE(title) FROM shop
+SELECT LCASE(title) FROM shop
+
+27. Grouping by some fields 
+SELECT price, COUNT(price) FROM `shop` GROUP BY price;
+SELECT price, COUNT(price) AS 'Quantity' FROM `shop` GROUP BY price
+
+28. select just with equal prices - HAVING COUNT(price) > 1;:
+SELECT price, COUNT(price) AS 'Quantity' FROM `shop` GROUP BY price HAVING COUNT(price) > 1;
